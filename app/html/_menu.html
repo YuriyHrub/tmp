@@ -1,0 +1,22 @@
+<nav class="nav">
+  <ul>
+    @@if(context.active === 'home') {
+      <li><span class="nav__link nav__link--active">Home</span></li>
+    }
+    @@if(context.active !== 'home') {
+      <li><a href="index.html" class="nav__link">Home</a></li>
+    }
+    @@if(context.active === 'about') {
+      <li><span class="nav__link nav__link--active">About</span></li>
+    } 
+    @@if(context.active !== 'about') {
+      <li><a href="about.html" class="nav__link">About</a></li>
+    }
+    @@if(context.active === 'project') {
+      <li><span class="nav__link nav__link--active">Project</span></li>
+    } 
+    @@if(context.active !== 'project') {
+      <li><a href="project.html" class="nav__link">Project</a></li>
+    }
+  </ul>
+</nav>

@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html lang="en">
+  @@include('html/_head.html', {
+    'description': 'The main page',
+    'title': 'Home page',
+    'css': 'css/style.css'
+  })
+<body>
+  @@include('html/_header.html', {
+  'title': 'Welcome to home page.',
+  'nav': true,
+  'active': 'home'
+  })
+
+  <h1>Learning GIT</h1>
+  
+  <form action="" method="GET">
+    <div>
+      <input type="tel" id="js-phone-mask">
+    </div>
+  </form>
+  @@include('html/_script.html')
+</body>
+</html>

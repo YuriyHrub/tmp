@@ -1,0 +1,14 @@
+<header>
+@@if (context.nav !== true) {
+  <h1>@@title</h1>
+}
+@@if (context.nav === true) {
+  @@include('_logo.html')
+  <h1>@@title</h1>
+  @@include('_menu.html', {
+    'active': '@@active'
+  })
+}
+</header>
+
+
