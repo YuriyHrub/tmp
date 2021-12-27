@@ -1,0 +1,2 @@
+Some string
+Second string
