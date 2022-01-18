@@ -1,23 +1,16 @@
 <!DOCTYPE html>
 <html lang="en">
   @@include('html/_head.html', {
-    'description': 'The main page',
-    'title': 'Home page',
-    'css': 'css/style.css'
+    'description': 'CreateX company',
+    'title': 'CreateX company',
+    'css': 'css/style.css',
   })
 <body>
-  @@include('html/_header.html', {
-  'title': 'Welcome to home page.',
-  'nav': true,
-  'active': 'home'
-  })
+  @@include('html/_header.html', {active: 'link1'})
+  <div class="container">
+    @@include('html/_footer.html')
+  </div>
 
-  <h1>Learning GIT. It's cool.</h1>
-  <form action="" method="GET">
-    <div>
-      <input type="tel" id="js-phone-mask">
-    </div>
-  </form>
   @@include('html/_script.html')
 </body>
 </html>

@@ -13,6 +13,7 @@ const {src, dest, watch, parallel, series, lastRun} = require('gulp'),
       autoprefixer = require('gulp-autoprefixer'),
       rename       = require('gulp-rename'),
       cleanCss     = require('gulp-cleancss'),
+      gcmq         = require('gulp-group-css-media-queries'),
       size         = require('gulp-size'),
       terser       = require('gulp-terser'),
       browserify   = require('browserify'),
@@ -90,6 +91,7 @@ function scss() {
           .pipe(sass.sync().on('error', sass.logError))
           .pipe(autoprefixer())
           .pipe(sourcemaps.write())
+          .pipe(gcmq())
           .pipe(dest(path.dist.css)).pipe(browserSync.stream());
 }
 

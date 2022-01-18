@@ -1,3 +1,8 @@
-<div class="logo">
-  <a href="/" class="logo__link">LOGO</a>
-</div>
+<a href="@@webRoot" class="logo">
+  @@if(context.src) {
+    <img class="logo__img" src="@@src" alt="@@alt">
+  }
+  @@if(context.txt) {
+    <span class="logo__txt">@@txt</span>
+  }
+</a>

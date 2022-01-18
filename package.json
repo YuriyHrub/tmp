@@ -23,6 +23,7 @@
     "gulp-cheerio": "^1.0.0",
     "gulp-cleancss": "^0.2.2",
     "gulp-file-include": "^2.3.0",
+    "gulp-group-css-media-queries": "^1.2.2",
     "gulp-imagemin": "^7.1.0",
     "gulp-plumber": "^1.2.1",
     "gulp-remove-empty-lines": "^0.1.0",

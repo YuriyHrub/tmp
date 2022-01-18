@@ -1,22 +1,44 @@
-<nav class="nav">
-  <ul>
-    @@if(context.active === 'home') {
-      <li><span class="nav__link nav__link--active">Home</span></li>
-    }
-    @@if(context.active !== 'home') {
-      <li><a href="index.html" class="nav__link">Home</a></li>
-    }
-    @@if(context.active === 'about') {
-      <li><span class="nav__link nav__link--active">About</span></li>
-    } 
-    @@if(context.active !== 'about') {
-      <li><a href="about.html" class="nav__link">About</a></li>
-    }
-    @@if(context.active === 'project') {
-      <li><span class="nav__link nav__link--active">Project</span></li>
-    } 
-    @@if(context.active !== 'project') {
-      <li><a href="project.html" class="nav__link">Project</a></li>
-    }
+<nav class="menu">
+  <ul class="menu__list">
+  @@if(context.link1) {
+    <li class="menu__item">
+        @@if(context.link1.active) {
+          <span class="menu__link">@@link1.txt</span>
+        }
+        @@if(!context.link1.active) {
+          <a href="@@link1.href" class="menu__link">@@link1.txt</a>
+        }
+    </li>
+  }
+  @@if(context.link2) {
+    <li class="menu__item">
+        @@if(context.link2.active) {
+          <span class="menu__link">@@link2.txt</span>
+        }
+        @@if(!context.link2.active) {
+          <a href="@@link2.href" class="menu__link">@@link2.txt</a>
+        }
+    </li>
+  }
+  @@if(context.link3) {
+    <li class="menu__item">
+        @@if(context.link3.active) {
+          <span class="menu__link">@@link3.txt</span>
+        }
+        @@if(!context.link3.active) {
+          <a href="@@link3.href" class="menu__link">@@link3.txt</a>
+        }
+    </li>
+  }
+  @@if(context.link4) {
+    <li class="menu__item">
+        @@if(context.link4.active) {
+          <span class="menu__link">@@link4.txt</span>
+        }
+        @@if(!context.link4.active) {
+          <a href="@@link4.href" class="menu__link">@@link4.txt</a>
+        }
+    </li>
+  }
   </ul>
 </nav>

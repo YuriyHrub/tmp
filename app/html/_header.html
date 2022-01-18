@@ -1,14 +1,49 @@
-<header>
-@@if (context.nav !== true) {
-  <h1>@@title</h1>
-}
-@@if (context.nav === true) {
-  @@include('_logo.html')
-  <h1>@@title</h1>
-  @@include('_menu.html', {
-    'active': '@@active'
-  })
-}
-</header>
+  <div class="header">
+    <div class="container header__inner">
+      <!-- menu -->
+      @@if(context.active === 'link1') {
+        @@include('_menu.html',
+        {
+          link1: {txt: 'Home', href: 'home.html', active: true},
+          link2: {txt: 'About', href: 'about.html'},
+          link3: {txt: 'Contacts', href: 'contacts.html'},
+          link4: {txt: 'Blog', href: 'blog.html'}
+        })
+      }
+      @@if(context.active === 'link2') {
+        @@include('_menu.html',
+        {
+          link1: {txt: 'Home', href: 'home.html'},
+          link2: {txt: 'About', href: 'about.html', active: true},
+          link3: {txt: 'Contacts', href: 'contacts.html'},
+          link4: {txt: 'Blog', href: 'blog.html'}
+        })
+      }
+      @@if(context.active === 'link3') {
+        @@include('_menu.html',
+        {
+          link1: {txt: 'Home', href: 'home.html'},
+          link2: {txt: 'About', href: 'about.html'},
+          link3: {txt: 'Contacts', href: 'contacts.html', active: true},
+          link4: {txt: 'Blog', href: 'blog.html'}
+        })
+      }
+      @@if(context.active === 'link4') {
+        @@include('_menu.html',
+        {
+          link1: {txt: 'Home', href: 'home.html'},
+          link2: {txt: 'About', href: 'about.html'},
+          link3: {txt: 'Contacts', href: 'contacts.html'},
+          link4: {txt: 'Blog', href: 'blog.html', active: true}
+        })
+      }
+      
+      <!-- logo -->
 
-
+      @@include('_logo.html',
+        {
+          src: 'img/svg/Star.svg',
+          alt: 'Nice star'
+        })
+    </div>
+  </div>
