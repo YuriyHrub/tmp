@@ -1,0 +1,5 @@
+{{#shapes}}
+@include bg-svg('../img/svg/sprite.view.svg#{{base}}', 0 0, {{width.inner}}px, {{height.inner}}px, no-repeat);
+{{/shapes}}
+
+

@@ -24,6 +24,8 @@ const {src, dest, watch, parallel, series, lastRun} = require('gulp'),
       plumber      = require('gulp-plumber'),
       cache        = require('gulp-cache'),
       imagemin     = require('gulp-imagemin'),
+      newer        = require('gulp-newer'),
+      webp         = require('gulp-webp'),
       svgsprite    = require('gulp-svg-sprite'),
       cheerio      = require('gulp-cheerio'),
       woff         = require('gulp-ttf2woff'),
@@ -79,7 +81,6 @@ function html() {
 }
 
 exports.html = html;
-//@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
 
 
 /* ===========================
@@ -96,7 +97,6 @@ function scss() {
 }
 
 exports.scss = scss;
-//@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
 
 
 /* ===========================
@@ -114,7 +114,6 @@ function libCss() {
 }
 
 exports.libcss = libCss;
-//@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
 
 
 /* ===========================
@@ -136,7 +135,6 @@ function prodCss() {
 }
 
 exports.prodcss = prodCss;
-//@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
 
 
 /* ===========================
@@ -155,7 +153,6 @@ function bundle() {
 }
 
 exports.bundle = bundle;
-//@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
 
 
 /* ===========================
@@ -174,7 +171,6 @@ function js() {
 }
 
 exports.js = js;
-//@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
 
 
 /* ===========================
@@ -193,7 +189,6 @@ function prodJs() {
 }
 
 exports.prodjs = prodJs;
-//@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
 
 
 /* ===========================
@@ -210,7 +205,6 @@ function vendorJs() {
 }
 
 exports.vendorjs = vendorJs;
-//@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
 
 
 /* ===========================
@@ -219,9 +213,10 @@ exports.vendorjs = vendorJs;
 function img() {
   return src(path.app.img, {since: lastRun(img)})
           .pipe(size())
+          .pipe(newer(path.dist.img))
           .pipe(cache(
             imagemin([
-            // imagemin.gifsicle({interlaced: true}),
+            imagemin.gifsicle({interlaced: true}),
             imagemin.mozjpeg({quality: 75, progressive: true}),
             imagemin.optipng({optimizationLevel: 5}),
             imagemin.svgo({
@@ -237,14 +232,23 @@ function img() {
 }
 
 exports.img = img;
-//@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
+
+function webpConvert() {
+  return src(path.app.img)
+          .pipe(size())
+          .pipe(newer(path.dist.img))
+          .pipe(webp())
+          .pipe(size())
+          .pipe(dest(`${app}/img`))
+          .pipe(browserSync.stream());
+}
+exports.webpConvert = webpConvert;
 
 
 /* ===========================
   #SVG
 ============================= */
-
-function svgSprite() {
+function symbolSprite() {
   const config = {
     mode: {
       symbol: {
@@ -253,35 +257,10 @@ function svgSprite() {
         sprite: 'sprite.symbol.svg',
         render: false,
         inline: true,
-        },
-      /*stack: {
-        bust: false,
-        dest: 'svg/',
-        sprite: 'sprite.svg',
-      }*/
-      /*css: {
-        dest: '',
-        bust: false,
-        dimensions: true,
-        prefix: '.%s',
-        render: {
-          scss: {
-            dest: '../_sprite.scss'
-          }
-        // }
       },
-      view: {
-        dest: '',
-        bust: false,
-        render: {
-          scss: {
-            dest: '../_sprite.view.scss'
-          }
-        }
-      }*/
     }
   }
-    return src(path.app.svg)
+    return src(`${path.app.svg}symbol/*`)
           .pipe(plumber())
           .pipe(svgsprite(config))
           .pipe(cheerio({
@@ -294,11 +273,34 @@ function svgSprite() {
               })
             }}))
           .pipe(dest(`${app}/img`))
-          .pipe(dest(`${dist}/img`))
 }
+exports.symbolsprite = symbolSprite;
 
-exports.svgsprite = svgSprite;
-//@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
+function viewSprite() {
+  const config = {
+    mode: {
+      view: {
+        dest: '',
+        bust: false,
+        dimensions: true,
+        // prefix: '.ic-%s',
+        render: {
+          scss: {
+            dest: '../scss/_sprite.view.scss',
+            template: `${app}/templates/_sprite_template.scss`,
+          },
+        }
+      }
+    }
+  }
+
+  return src(`${path.app.svg}view/*`)
+          .pipe(plumber())
+          .pipe(imagemin())
+          .pipe(svgsprite(config))
+          .pipe(dest(`${app}/img`))
+}
+exports.viewsprite = viewSprite;
 
 
 /* ===========================
@@ -317,7 +319,6 @@ function toWoff2() {
 exports.woff = toWoff;
 exports.woff = toWoff2;
 exports.font = series(toWoff, toWoff2);
-//@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
 
 
 /* ===========================
@@ -328,11 +329,10 @@ exports.del = function(done) {
   cache.clearAll();
   done()
 }
-//@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
 
 
 /* ===========================
-  #Reload
+  #Watcher
 ============================= */
 function watchFiles() {
   browserSync.init({
@@ -349,10 +349,10 @@ function watchFiles() {
   watch(path.dist.font, browserSync.reload());
 }
 
+//TODO: confirm 
 exports.watch = watchFiles;
-//@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
 
 exports.default = series(html, scss, libCss, js, vendorJs, watchFiles);
 exports.prod    = series(html, 
                   parallel(series(scss, prodCss), libCss),
-                  parallel(series(js, prodJs), vendorJs), img, svgSprite);
+                  parallel(series(js, prodJs), vendorJs), img);
