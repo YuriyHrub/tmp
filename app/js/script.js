@@ -1,13 +1,12 @@
 'use strict';
 let userAgent = ~navigator.userAgent.indexOf('Trident/7.0;');
-console.log(~navigator.userAgent.indexOf('Triedent/7.0;'));
-if(userAgent) {
+if (userAgent) {
   document.documentElement.classList.add('ie');
 } else {
   document.documentElement.classList.add('no-ie')
 }
 
-if(document.documentElement.classList.contains('ie')) {
+if (document.documentElement.classList.contains('ie')) {
   svg4everybody();
 }
 
